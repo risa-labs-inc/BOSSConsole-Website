@@ -24,7 +24,22 @@ export default function App() {
 
   // Smart download handler for nav bar and pricing buttons
   const handleSmartDownload = () => {
-    if (!release) return;
+    console.log('=== Download Button Clicked ===');
+    console.log('Release loaded:', !!release);
+    console.log('Assets count:', release?.assets?.length || 0);
+    console.log('Detected platform:', userPlatform);
+    console.log('Detected architecture:', userArch);
+    console.log('User agent:', navigator.userAgent);
+
+    if (!release) {
+      alert('Release data is still loading. Please try again in a moment.');
+      return;
+    }
+
+    if (!release.assets || release.assets.length === 0) {
+      alert('No downloads available. Please try again later.');
+      return;
+    }
 
     const downloadUrl = getDefaultDownloadUrl(
       release.assets,
@@ -32,9 +47,12 @@ export default function App() {
       userArch
     );
 
+    console.log('Download URL:', downloadUrl);
+
     if (downloadUrl) {
       window.location.href = downloadUrl;
     } else {
+      console.log('Available assets:', release.assets.map(a => a.name));
       alert('Unable to detect your platform. Please choose from the platform cards below.');
     }
   };
