@@ -56,20 +56,44 @@ export function getDefaultDownloadUrl(
 
   switch (platform) {
     case 'macOS':
-      // macOS uses Universal binary (supports both Intel and ARM)
-      const dmg = assets.find((a) => a.name.includes('Universal.dmg'));
-      return dmg?.browser_download_url || null;
+      // Try to find ARM64 or x64 specific build, fallback to any macOS build
+      if (arch === 'arm64') {
+        const arm = assets.find((a) => a.name.toLowerCase().includes('macos') && a.name.toLowerCase().includes('arm64'));
+        if (arm) return arm.browser_download_url;
+      }
+
+      // Check for DMG files first (official releases)
+      const dmg = assets.find((a) => a.name.includes('Universal.dmg') || (a.name.includes('macos') && a.name.endsWith('.dmg')));
+      if (dmg) return dmg.browser_download_url;
+
+      // Fallback to any macOS zip or package
+      const macBuild = assets.find((a) => a.name.toLowerCase().includes('macos') || a.name.toLowerCase().includes('darwin'));
+      return macBuild?.browser_download_url || null;
 
     case 'Windows':
-      // Windows uses MSI installer
+      // Check for MSI first (official releases), then EXE, then ZIP
       const msi = assets.find((a) => a.name.endsWith('.msi'));
-      return msi?.browser_download_url || null;
+      if (msi) return msi.browser_download_url;
+
+      const exe = assets.find((a) => a.name.endsWith('.exe'));
+      if (exe) return exe.browser_download_url;
+
+      const winZip = assets.find((a) => a.name.toLowerCase().includes('windows') || a.name.toLowerCase().includes('win'));
+      return winZip?.browser_download_url || null;
 
     case 'Linux':
-      // Linux: Default to DEB package (most common - Ubuntu/Debian)
-      // Could be enhanced to detect distro type, but DEB is safe fallback
-      const deb = assets.find((a) => a.name.includes('amd64.deb'));
-      return deb?.browser_download_url || null;
+      // Try DEB first (most common), then RPM, then JAR, then any Linux build
+      const deb = assets.find((a) => a.name.includes('amd64.deb') || a.name.endsWith('.deb'));
+      if (deb) return deb.browser_download_url;
+
+      const rpm = assets.find((a) => a.name.includes('.rpm'));
+      if (rpm) return rpm.browser_download_url;
+
+      const jar = assets.find((a) => a.name.includes('.jar'));
+      if (jar) return jar.browser_download_url;
+
+      const linuxBuild = assets.find((a) => a.name.toLowerCase().includes('linux'));
+      return linuxBuild?.browser_download_url || null;
 
     default:
       return null;
