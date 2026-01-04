@@ -229,7 +229,7 @@ function HomePage({ release, loading, error }: HomePageProps) {
           </p>
           
           {/* Platform Download Cards */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
             <PlatformCard
               icon={<AppleLogo />}
               title="macOS"
@@ -385,10 +385,10 @@ function PlatformCard({
               key={idx}
               onClick={() => download.url && (window.location.href = download.url)}
               disabled={!download.url}
-              className="w-full px-3 py-2 text-sm border border-white/40 rounded-lg hover:bg-white hover:text-black transition-colors text-left flex items-center justify-between whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-2.5 text-sm border border-white/40 rounded-lg hover:bg-white hover:text-black transition-colors text-left flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="truncate text-left">{download.label}</span>
-              {download.url && <Download className="w-3.5 h-3.5 flex-shrink-0 ml-2" />}
+              <span className="text-left flex-1 min-w-0">{download.label}</span>
+              {download.url && <Download className="w-3.5 h-3.5 flex-shrink-0 ml-3" />}
             </button>
           ))}
         </div>
