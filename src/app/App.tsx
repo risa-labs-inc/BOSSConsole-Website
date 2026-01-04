@@ -239,11 +239,17 @@ function HomePage({ release, loading, error }: HomePageProps) {
                       {
                         label: 'Download for Apple Silicon',
                         recommended: true,
-                        url: release.assets.find((a) => a.name.includes('Universal.dmg'))?.browser_download_url,
+                        url: release.assets.find((a) =>
+                          a.name.toLowerCase().includes('macos') &&
+                          (a.name.toLowerCase().includes('arm64') || a.name.includes('Universal.dmg'))
+                        )?.browser_download_url,
                       },
                       {
                         label: 'Download for Intel',
-                        url: release.assets.find((a) => a.name.includes('Universal.dmg'))?.browser_download_url,
+                        url: release.assets.find((a) =>
+                          a.name.toLowerCase().includes('macos') &&
+                          (a.name.toLowerCase().includes('x64') || a.name.includes('Universal.dmg'))
+                        )?.browser_download_url,
                       },
                     ]
                   : [
@@ -266,7 +272,12 @@ function HomePage({ release, loading, error }: HomePageProps) {
                   ? [
                       {
                         label: 'Download for x64',
-                        url: release.assets.find((a) => a.name.endsWith('.msi'))?.browser_download_url,
+                        url: release.assets.find((a) =>
+                          a.name.toLowerCase().includes('windows') ||
+                          a.name.toLowerCase().includes('win') ||
+                          a.name.endsWith('.msi') ||
+                          a.name.endsWith('.exe')
+                        )?.browser_download_url,
                       },
                     ]
                   : [{ label: 'Loading...' }]
@@ -286,15 +297,18 @@ function HomePage({ release, loading, error }: HomePageProps) {
                   ? [
                       {
                         label: 'Download DEB',
-                        url: release.assets.find((a) => a.name.includes('amd64.deb'))?.browser_download_url,
+                        url: release.assets.find((a) => a.name.includes('.deb'))?.browser_download_url ||
+                             release.assets.find((a) => a.name.toLowerCase().includes('linux'))?.browser_download_url,
                       },
                       {
                         label: 'Download RPM',
-                        url: release.assets.find((a) => a.name.includes('amd64.rpm'))?.browser_download_url,
+                        url: release.assets.find((a) => a.name.includes('.rpm'))?.browser_download_url ||
+                             release.assets.find((a) => a.name.toLowerCase().includes('linux'))?.browser_download_url,
                       },
                       {
                         label: 'Download JAR',
-                        url: release.assets.find((a) => a.name.includes('amd64.jar'))?.browser_download_url,
+                        url: release.assets.find((a) => a.name.includes('.jar'))?.browser_download_url ||
+                             release.assets.find((a) => a.name.toLowerCase().includes('linux'))?.browser_download_url,
                       },
                     ]
                   : [
