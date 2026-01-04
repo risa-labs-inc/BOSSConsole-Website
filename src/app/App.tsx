@@ -385,10 +385,10 @@ function PlatformCard({
               key={idx}
               onClick={() => download.url && (window.location.href = download.url)}
               disabled={!download.url}
-              className="w-full px-4 py-2.5 text-sm border border-white/40 rounded-lg hover:bg-white hover:text-black transition-colors text-left flex items-center justify-between whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-3 py-2.5 text-xs border border-white/40 rounded-lg hover:bg-white hover:text-black transition-colors text-left flex items-center justify-between whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="text-left">{download.label}</span>
-              {download.url && <Download className="w-3.5 h-3.5 flex-shrink-0 ml-3" />}
+              {download.url && <Download className="w-3 h-3 flex-shrink-0 ml-2" />}
             </button>
           ))}
         </div>
