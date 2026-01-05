@@ -26,7 +26,7 @@ export interface GitHubRelease {
  */
 export async function fetchLatestRelease(): Promise<GitHubRelease> {
   const response = await fetch(
-    'https://api.github.com/repos/risa-labs-inc/BOSS-Releases/releases/latest'
+    'https://api.github.com/repos/risa-labs-inc/BossConsole-Releases/releases/latest'
   );
 
   if (!response.ok) {
@@ -44,7 +44,7 @@ export async function fetchLatestRelease(): Promise<GitHubRelease> {
  */
 export async function fetchAllReleases(): Promise<GitHubRelease[]> {
   const response = await fetch(
-    'https://api.github.com/repos/risa-labs-inc/BOSS-Releases/releases'
+    'https://api.github.com/repos/risa-labs-inc/BossConsole-Releases/releases'
   );
 
   if (!response.ok) {
