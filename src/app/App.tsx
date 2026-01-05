@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Github, Download, ChevronDown, Menu, X } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { useReleaseData } from '../hooks/useReleaseData';
@@ -209,6 +209,57 @@ export default function App() {
   );
 }
 
+/**
+ * Typewriter component that cycles through different AI coding assistants
+ */
+function Typewriter() {
+  const phrases = ['Claude Code', 'OpenAI Codex', 'Google Jules', 'GitHub Copilot'];
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(100);
+
+  useEffect(() => {
+    const currentPhrase = phrases[currentPhraseIndex];
+
+    const handleTyping = () => {
+      if (!isDeleting) {
+        // Typing forward
+        if (displayText.length < currentPhrase.length) {
+          setDisplayText(currentPhrase.substring(0, displayText.length + 1));
+          setTypingSpeed(100);
+        } else {
+          // Finished typing, wait before deleting
+          setTimeout(() => setIsDeleting(true), 2000);
+          return;
+        }
+      } else {
+        // Deleting
+        if (displayText.length > 0) {
+          setDisplayText(currentPhrase.substring(0, displayText.length - 1));
+          setTypingSpeed(50);
+        } else {
+          // Finished deleting, move to next phrase
+          setIsDeleting(false);
+          setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+          setTypingSpeed(500); // Pause before typing next phrase
+          return;
+        }
+      }
+    };
+
+    const timer = setTimeout(handleTyping, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, currentPhraseIndex, typingSpeed]);
+
+  return (
+    <span>
+      The most powerful way to use <span className="text-white">{displayText}</span>
+      <span className="animate-pulse">|</span>
+    </span>
+  );
+}
+
 interface HomePageProps {
   release: any;
   loading: boolean;
@@ -225,7 +276,7 @@ function HomePage({ release, loading, error }: HomePageProps) {
             BOSS CONSOLE AI
           </h2>
           <p className="text-base md:text-lg text-white/60 mb-12 tracking-wide">
-            The most powerful way to use Claude Code
+            <Typewriter />
           </p>
 
           {/* BOSS Console Screenshot */}
