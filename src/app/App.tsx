@@ -571,12 +571,12 @@ function PricingPage({ release, loading, handleSmartDownload }: PricingPageProps
               <span className="text-white/60 text-sm"> /{billingCycle === 'monthly' ? 'month' : 'year'}</span>
             </div>
             <a
-              href="https://calendly.com/anis-risalabs/30min"
+              href="https://forms.gle/tmcfYF6iRM6ntJoK7"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full mb-6 px-5 py-2.5 text-sm bg-white text-black rounded-lg hover:bg-white/90 transition-colors block text-center"
             >
-              APPLY FOR AN INVITE
+              APPLY FOR AN INVITE NOW
             </a>
             <div className="space-y-3 text-sm">
               <p className="mb-3">Everything in Hobby Mode, plus:</p>
