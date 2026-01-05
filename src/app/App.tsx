@@ -522,7 +522,10 @@ function PricingPage({ release, loading, handleSmartDownload }: PricingPageProps
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
-          <div className="border border-white/20 rounded-lg p-6">
+          <div className="border border-white/20 rounded-lg p-6 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black px-3 py-1 text-xs rounded">
+              START HERE
+            </div>
             <h3 className="text-2xl mb-2 tracking-wide">Hobby Mode</h3>
             <p className="text-sm text-white/60 mb-6">Perfect for getting started</p>
             <div className="mb-6">
@@ -558,7 +561,7 @@ function PricingPage({ release, loading, handleSmartDownload }: PricingPageProps
 
           <div className="border border-white rounded-lg p-6 relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black px-3 py-1 text-xs rounded">
-              RECOMMENDED
+              INVITE ONLY
             </div>
             <h3 className="text-2xl mb-2 tracking-wide">BOSS Mode</h3>
             <p className="text-sm text-white/60 mb-6">For power users</p>
@@ -573,7 +576,7 @@ function PricingPage({ release, loading, handleSmartDownload }: PricingPageProps
               rel="noopener noreferrer"
               className="w-full mb-6 px-5 py-2.5 text-sm bg-white text-black rounded-lg hover:bg-white/90 transition-colors block text-center"
             >
-              Get BOSS Mode
+              APPLY FOR AN INVITE
             </a>
             <div className="space-y-3 text-sm">
               <p className="mb-3">Everything in Hobby Mode, plus:</p>
