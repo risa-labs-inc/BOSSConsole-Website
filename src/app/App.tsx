@@ -227,7 +227,16 @@ function HomePage({ release, loading, error }: HomePageProps) {
           <p className="text-base md:text-lg text-white/60 mb-12 tracking-wide">
             The most powerful way to use Claude Code
           </p>
-          
+
+          {/* BOSS Console Screenshot */}
+          <div className="mb-16">
+            <img
+              src="/boss-console-screenshot.png"
+              alt="BOSS Console Interface"
+              className="w-full max-w-5xl mx-auto rounded-lg shadow-2xl"
+            />
+          </div>
+
           {/* Platform Download Cards */}
           <div className="grid md:grid-cols-3 gap-8 w-full px-4 mx-auto">
             <PlatformCard
