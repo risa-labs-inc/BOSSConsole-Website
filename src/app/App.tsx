@@ -258,7 +258,7 @@ function HomePage({ release, loading, error }: HomePageProps) {
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-32">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-5xl md:text-6xl mb-8 tracking-wider" style={{ letterSpacing: '-0.05em' }}>
+          <h2 className="text-4xl md:text-6xl mb-8 tracking-wider" style={{ letterSpacing: '-0.05em' }}>
             BOSS CONSOLE AI
           </h2>
           <p className="text-base md:text-lg text-white/60 mb-12 tracking-wide">
