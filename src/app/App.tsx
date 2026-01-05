@@ -528,10 +528,6 @@ function PricingPage({ release, loading, handleSmartDownload }: PricingPageProps
               <p className="mb-3">What's included:</p>
               <div className="flex items-start gap-3">
                 <span className="text-white/60">✓</span>
-                <span>One-week Pro Trial</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-white/60">✓</span>
                 <span>Limited Agent Requests</span>
               </div>
               <div className="flex items-start gap-3 opacity-40">
