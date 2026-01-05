@@ -268,7 +268,7 @@ function HomePage({ release, loading, error }: HomePageProps) {
           {/* BOSS Console Screenshot */}
           <div className="mb-16">
             <img
-              src="/boss-console-screenshot.jpeg"
+              src="/boss-console-screenshot.png"
               alt="BOSS Console Interface"
               className="w-full max-w-5xl mx-auto rounded-lg shadow-2xl"
             />
