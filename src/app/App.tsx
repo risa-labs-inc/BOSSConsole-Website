@@ -230,7 +230,7 @@ function Typewriter() {
           setTypingSpeed(100);
         } else {
           // Finished typing, wait before deleting
-          setTimeout(() => setIsDeleting(true), 2000);
+          setTimeout(() => setIsDeleting(true), 500);
           return;
         }
       } else {
