@@ -240,7 +240,7 @@ function Typewriter() {
 
   return (
     <span>
-      The most powerful way to use <span className="text-white">{displayText}</span>
+      The most powerful way to use<br className="md:hidden" /> <span className="text-white">{displayText}</span>
       <span className="animate-pulse">|</span>
     </span>
   );
