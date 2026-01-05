@@ -63,36 +63,30 @@ export default function App() {
       <nav className="border-b border-white/20">
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <h1 className="tracking-wider" style={{ letterSpacing: '-0.05em' }}>
-                BOSS CONSOLE
-              </h1>
-              <div className="hidden md:flex items-center gap-6">
-                <button
-                  onClick={() => setCurrentPage('home')}
-                  className={`tracking-wide transition-colors ${
-                    currentPage === 'home' ? 'text-white' : 'text-white/60 hover:text-white'
-                  }`}
-                >
-                  Home
-                </button>
-                <button
-                  onClick={() => setCurrentPage('pricing')}
-                  className={`tracking-wide transition-colors ${
-                    currentPage === 'pricing' ? 'text-white' : 'text-white/60 hover:text-white'
-                  }`}
-                >
-                  Pricing
-                </button>
-                <button
-                  onClick={() => setCurrentPage('changelog')}
-                  className={`tracking-wide transition-colors ${
-                    currentPage === 'changelog' ? 'text-white' : 'text-white/60 hover:text-white'
-                  }`}
-                >
-                  Changelog
-                </button>
-              </div>
+            <button
+              onClick={() => setCurrentPage('home')}
+              className="tracking-wider hover:opacity-80 transition-opacity"
+              style={{ letterSpacing: '-0.05em' }}
+            >
+              BOSS CONSOLE
+            </button>
+            <div className="hidden md:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
+              <button
+                onClick={() => setCurrentPage('pricing')}
+                className={`text-sm tracking-wide transition-colors ${
+                  currentPage === 'pricing' ? 'text-white' : 'text-white/60 hover:text-white'
+                }`}
+              >
+                Pricing
+              </button>
+              <button
+                onClick={() => setCurrentPage('changelog')}
+                className={`text-sm tracking-wide transition-colors ${
+                  currentPage === 'changelog' ? 'text-white' : 'text-white/60 hover:text-white'
+                }`}
+              >
+                Changelog
+              </button>
             </div>
             <div className="flex items-center gap-3">
               <a
@@ -134,16 +128,8 @@ export default function App() {
             <div className="container mx-auto px-6 py-4">
               <div className="flex flex-col space-y-4">
                 <button
-                  onClick={() => navigateTo('home')}
-                  className={`text-left py-2 tracking-wide transition-colors ${
-                    currentPage === 'home' ? 'text-white' : 'text-white/60 hover:text-white'
-                  }`}
-                >
-                  Home
-                </button>
-                <button
                   onClick={() => navigateTo('pricing')}
-                  className={`text-left py-2 tracking-wide transition-colors ${
+                  className={`text-left py-2 text-sm tracking-wide transition-colors ${
                     currentPage === 'pricing' ? 'text-white' : 'text-white/60 hover:text-white'
                   }`}
                 >
@@ -151,7 +137,7 @@ export default function App() {
                 </button>
                 <button
                   onClick={() => navigateTo('changelog')}
-                  className={`text-left py-2 tracking-wide transition-colors ${
+                  className={`text-left py-2 text-sm tracking-wide transition-colors ${
                     currentPage === 'changelog' ? 'text-white' : 'text-white/60 hover:text-white'
                   }`}
                 >
