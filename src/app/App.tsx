@@ -286,15 +286,15 @@ function HomePage({ release, loading, error }: HomePageProps) {
                         label: 'Download for Apple Silicon',
                         recommended: true,
                         url: release.assets.find((a) =>
-                          a.name.toLowerCase().includes('macos') &&
-                          (a.name.toLowerCase().includes('arm64') || a.name.includes('Universal.dmg'))
+                          a.name.includes('Universal.dmg') ||
+                          (a.name.toLowerCase().includes('macos') && a.name.toLowerCase().includes('arm64'))
                         )?.browser_download_url,
                       },
                       {
                         label: 'Download for Intel',
                         url: release.assets.find((a) =>
-                          a.name.toLowerCase().includes('macos') &&
-                          (a.name.toLowerCase().includes('x64') || a.name.includes('Universal.dmg'))
+                          a.name.includes('Universal.dmg') ||
+                          (a.name.toLowerCase().includes('macos') && a.name.toLowerCase().includes('x64'))
                         )?.browser_download_url,
                       },
                     ]
