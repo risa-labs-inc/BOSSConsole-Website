@@ -213,7 +213,7 @@ export default function App() {
  * Typewriter component that cycles through different AI coding assistants
  */
 function Typewriter() {
-  const phrases = ['Claude Code', 'OpenAI Codex', 'Google Jules', 'GitHub Copilot'];
+  const phrases = ['Claude Code', 'OpenAI Codex'];
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
