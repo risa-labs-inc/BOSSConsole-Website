@@ -5,6 +5,7 @@ import { useReleaseData } from '../hooks/useReleaseData';
 import { useAllReleases } from '../hooks/useAllReleases';
 import { detectPlatform, detectArchitecture, getDefaultDownloadUrl } from '../utils/platform';
 import { GitHubAsset } from '../services/github';
+import ReactMarkdown from 'react-markdown';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'pricing' | 'changelog'>('home');
@@ -639,6 +640,11 @@ function parseAssetInfo(asset: GitHubAsset) {
   return { platform, architecture, packageType, url: asset.browser_download_url };
 }
 
+interface ReleaseSection {
+  title: string;
+  content: string;
+}
+
 function ChangelogPage() {
   const { releases, loading, error } = useAllReleases();
 
@@ -676,36 +682,55 @@ function ChangelogPage() {
 
         <div className="space-y-12">
           {releases.map((release, idx) => {
-            // Parse release body to extract What's New section
-            const extractWhatsNew = (body: string) => {
-              if (!body) return ['Release notes not available'];
+            // Parse release body to extract all sections
+            const parseReleaseBody = (body: string): ReleaseSection[] => {
+              if (!body) return [];
 
-              // Find the What's New section (handling emojis and various formats)
-              const whatsNewRegex = /##?\s*[✨🚀📦🔧]*\s*What'?s\s+New[^#\n]*\n+([\s\S]*?)(?=\n##|$)/i;
-              const whatsNewMatch = body.match(whatsNewRegex);
+              // Excluded sections
+              const excludedSections = ['downloads', 'full changelog', 'assets', 'additional info'];
 
-              if (whatsNewMatch && whatsNewMatch[1]) {
-                // Extract bullet points
-                const content = whatsNewMatch[1];
-                const bullets = content
-                  .split('\n')
-                  .map(line => line.trim())
-                  .filter(line => line.startsWith('-') || line.startsWith('*'))
-                  .map(line => line.replace(/^[-*]\s*/, '').trim());
+              // Split by ## headers
+              const sectionRegex = /^##\s+(.+)$/gm;
+              const sections: ReleaseSection[] = [];
+              const matches: Array<{ title: string; index: number; fullMatch: string }> = [];
 
-                if (bullets.length > 0) {
-                  return bullets;
+              // Collect all matches first
+              let match;
+              while ((match = sectionRegex.exec(body)) !== null) {
+                matches.push({
+                  title: match[1].trim(),
+                  index: match.index,
+                  fullMatch: match[0]
+                });
+              }
+
+              // Process each match to extract content
+              for (let i = 0; i < matches.length; i++) {
+                const current = matches[i];
+                const titleLower = current.title.toLowerCase();
+
+                // Skip excluded sections
+                if (excludedSections.some(excluded => titleLower.includes(excluded))) {
+                  continue;
+                }
+
+                // Find content between this header and next ## or end
+                const contentStart = current.index + current.fullMatch.length;
+                const contentEnd = i < matches.length - 1 ? matches[i + 1].index : body.length;
+                const content = body.substring(contentStart, contentEnd).trim();
+
+                if (content) {
+                  sections.push({
+                    title: current.title,
+                    content: content
+                  });
                 }
               }
 
-              // Fallback: return release notes not available
-              return ['Release notes not available'];
+              return sections;
             };
 
-            const releaseNotes = extractWhatsNew(release.body || '');
-
-            // Parse assets for download table
-            const downloads = release.assets.map(asset => parseAssetInfo(asset));
+            const releaseSections = parseReleaseBody(release.body || '');
 
             // Format date
             const releaseDate = new Date(release.published_at).toLocaleDateString('en-US', {
@@ -729,61 +754,23 @@ function ChangelogPage() {
                     <h4 className="text-lg mb-5"># {release.name || release.tag_name}</h4>
                   </div>
 
-                  {/* What's New */}
-                  <div className="mb-10">
-                    <h5 className="text-base mb-4 flex items-center gap-2">
-                      ✨ What's New
-                    </h5>
-                    <ul className="space-y-2 text-sm">
-                      {releaseNotes.map((item, itemIdx) => (
-                        <li key={itemIdx} className="text-white/80 leading-relaxed flex items-start gap-2">
-                          <span className="text-white/60 mt-1">•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Downloads Table */}
-                  <div>
-                    <h5 className="text-base mb-4 flex items-center gap-2">
-                      📦 Downloads
-                    </h5>
-                    <div className="border border-white/20 rounded-lg overflow-hidden">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="border-b border-white/20">
-                            <th className="text-left py-3 px-4 text-white/60">Platform</th>
-                            <th className="text-left py-3 px-4 text-white/60">Architecture</th>
-                            <th className="text-left py-3 px-4 text-white/60">Package</th>
-                            <th className="text-right py-3 px-4 text-white/60">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {downloads.map((download, downloadIdx) => (
-                            <tr key={downloadIdx} className="border-b border-white/10 hover:bg-white/5 transition-colors">
-                              <td className="py-3 px-4">{download.platform}</td>
-                              <td className="py-3 px-4">{download.architecture}</td>
-                              <td className="py-3 px-4">
-                                <span className="border border-white/40 rounded px-2 py-0.5 text-xs">
-                                  {download.packageType}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 text-right">
-                                <a
-                                  href={download.url}
-                                  className="text-white/60 hover:text-white transition-colors inline-flex items-center gap-2 text-xs"
-                                >
-                                  <Download className="w-3.5 h-3.5" />
-                                  Download
-                                </a>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                  {/* Release Sections */}
+                  {releaseSections.length > 0 ? (
+                    releaseSections.map((section, sectionIdx) => (
+                      <div key={sectionIdx} className="mb-10">
+                        <h5 className="text-base mb-4 flex items-center gap-2">
+                          {section.title}
+                        </h5>
+                        <div className="text-sm text-white/80 leading-relaxed markdown-content">
+                          <ReactMarkdown>{section.content}</ReactMarkdown>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="mb-10">
+                      <p className="text-sm text-white/60">Release notes not available</p>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             );
